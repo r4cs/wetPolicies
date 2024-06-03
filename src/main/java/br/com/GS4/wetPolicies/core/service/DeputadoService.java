@@ -6,6 +6,8 @@ import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.repository.DeputadoRepository;
 import br.com.GS4.wetPolicies.core.service.strategy.PoliticaMarinhaStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +25,9 @@ public class DeputadoService {
         this.politicaMarinhaStrategy = politicaMarinhaStrategy;
     }
 
-    public List<DeputadoDto> findAll() {
-        List<DeputadoDto> deputados = deputadoRepository.findAll().stream()
-                .map(DeputadoDto::new)
-                .collect(Collectors.toList());
-        return politicaMarinhaStrategy.filtrarDeputadosPoliticaMarinha(deputados);
+    public Page<Deputado> findAll(Pageable page) {
+        return deputadoRepository.findAll(page);
+//        return politicaMarinhaStrategy.filtrarDeputadosPoliticaMarinha(deputados.toList());
     }
 
     public Optional<Deputado> findById(Integer id) {
