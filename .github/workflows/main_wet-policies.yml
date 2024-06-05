@@ -14,15 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-#      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Remove test files
         run: rm -rf src/test/
 
       - name: Set up Java version
-        uses: actions/setup-java@v2
-#        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1
         with:
           java-version: '17'
 
@@ -33,11 +31,11 @@ jobs:
         run: ./gradlew clean build
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-#        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: java-app
           path: 'build/libs/wetPolicies-0.0.1-SNAPSHOT.jar'
+#          path: '${{ github.workspace }}/build/libs/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,18 +44,15 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
-
+      id-token: write #This is required for requesting the JWT
+  
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-#        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: java-app
-
-      - name: List files for debugging
-        run: ls -R
-
+          path: './' # Ensure the artifact is downloaded to the current directory
+      
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -71,4 +66,6 @@ jobs:
         with:
           app-name: 'wet-policies'
           slot-name: 'Production'
-          package: './wetPolicies-0.0.1-SNAPSHOT.jar'
+          package: 'java-app/wetPolicies-0.0.1-SNAPSHOT.jar'
+#          package: 'build/libs/wetPolicies-0.0.1-SNAPSHOT.jar'
+          
