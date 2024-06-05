@@ -1,6 +1,8 @@
 HELP.md
 .gradle
+# Ignore the entire build directory except the build/libs subdirectory
 build/
+!build/libs/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
