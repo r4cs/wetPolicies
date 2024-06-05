@@ -57,7 +57,8 @@ public class SecurityConfig {
                 "/css/**", "/images/**",
                 "/deputados/**",
                 "/proposicoes/**",
-                "/votacoes/**"
+                "/votacoes/**",
+                "/bancada/**"
         );
     }
 }
