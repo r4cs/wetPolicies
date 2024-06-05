@@ -35,7 +35,6 @@ jobs:
         with:
           name: java-app
           path: 'build/libs/wetPolicies-0.0.1-SNAPSHOT.jar'
-#          path: '${{ github.workspace }}/build/libs/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,15 +43,18 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-  
+      id-token: write # This is required for requesting the JWT
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: java-app
-          path: './' # Ensure the artifact is downloaded to the current directory
-      
+          path: './'
+
+      - name: List files for debugging
+        run: ls -R
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -67,5 +69,3 @@ jobs:
           app-name: 'wet-policies'
           slot-name: 'Production'
           package: 'java-app/wetPolicies-0.0.1-SNAPSHOT.jar'
-#          package: 'build/libs/wetPolicies-0.0.1-SNAPSHOT.jar'
-          
