@@ -2,7 +2,7 @@ package br.com.GS4.wetPolicies.core.model.DTO;
 
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
-import br.com.GS4.wetPolicies.core.model.entity.Votacao;
+import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +19,7 @@ public record ProposicaoDto(
         Integer ano,
         String ementa,
         Deputado idDeputadoAutor,
-        List<Votacao> votacoes) implements Serializable {
+        List<VotacaoPorProposicao> votacoes) implements Serializable {
     public ProposicaoDto(Proposicao entity) {
         this(
                 entity.getId(),

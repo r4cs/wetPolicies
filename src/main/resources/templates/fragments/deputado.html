@@ -7,7 +7,8 @@
 <div th:fragment="deputado(deputado)">
     <div class="card-body">
         <h5 class="card-title" th:text="${deputado.nome}"></h5>
-        <p class="card-text" th:text="${deputado.siglaPartido}"></p>
+        <p class="card-text" th:text="${deputado.partido}"></p>
+        <p class="card-text" th:text="${deputado.uf}"></p>
         <span class="badge"
               th:classappend="${deputado.classificacao == 'verde'} ? 'bg-success' :
                                 (${deputado.classificacao == 'amarelo'} ? 'bg-warning' : 'bg-danger')"

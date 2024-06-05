@@ -17,12 +17,10 @@ import java.util.stream.Collectors;
 @Service
 public class DeputadoService {
     private final DeputadoRepository deputadoRepository;
-    private final PoliticaMarinhaStrategy politicaMarinhaStrategy;
 
     @Autowired
-    public DeputadoService(DeputadoRepository deputadoRepository, PoliticaMarinhaStrategy politicaMarinhaStrategy) {
+    public DeputadoService(DeputadoRepository deputadoRepository) {
         this.deputadoRepository = deputadoRepository;
-        this.politicaMarinhaStrategy = politicaMarinhaStrategy;
     }
 
     public Page<Deputado> findAll(Pageable page) {

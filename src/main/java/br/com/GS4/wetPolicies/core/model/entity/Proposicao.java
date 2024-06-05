@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "proposicao")
 public class Proposicao {
     @Id
     private Integer id;
@@ -24,7 +25,7 @@ public class Proposicao {
     private Deputado idDeputadoAutor;
 
     @OneToMany(mappedBy = "proposicao")
-    private List<Votacao> votacoes;
+    private List<VotacaoPorProposicao> votacoes;
     public Proposicao() {}
 
     public Proposicao(ProposicaoDto dto) {

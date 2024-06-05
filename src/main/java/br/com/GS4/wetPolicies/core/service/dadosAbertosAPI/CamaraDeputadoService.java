@@ -1,9 +1,8 @@
 package br.com.GS4.wetPolicies.core.service.dadosAbertosAPI;
 
-import br.com.GS4.wetPolicies.core.controller.dadosAbertosAPI.CamaraClient;
+import br.com.GS4.wetPolicies.core.controller.dadosAbertosAPI.CamaraClientApiNova;
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.repository.DeputadoRepository;
-import br.com.GS4.wetPolicies.core.service.strategy.PoliticaMarinhaStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.LoggerFactory;
@@ -16,11 +15,11 @@ import java.util.Map;
 public class CamaraDeputadoService {
     private static final Logger logger = LoggerFactory.getLogger(CamaraDeputadoService.class);
 
-    private final CamaraClient camaraClient;
+    private final CamaraClientApiNova camaraClient;
     private final DeputadoRepository deputadoRepository;
 
     @Autowired
-    public CamaraDeputadoService(DeputadoRepository deputadoRepository, CamaraClient camaraClient) {
+    public CamaraDeputadoService(DeputadoRepository deputadoRepository, CamaraClientApiNova camaraClient) {
         this.deputadoRepository = deputadoRepository;
         this.camaraClient = camaraClient;
     }

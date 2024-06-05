@@ -1,13 +1,10 @@
 package br.com.GS4.wetPolicies.core.service.strategy;
 
-import br.com.GS4.wetPolicies.core.model.DTO.DeputadoDto;
-import br.com.GS4.wetPolicies.core.model.DTO.ProposicaoDto;
-import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
+import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PoliticaMarinhaStrategyImpl implements PoliticaMarinhaStrategy {
@@ -21,31 +18,11 @@ public class PoliticaMarinhaStrategyImpl implements PoliticaMarinhaStrategy {
     );
 
 
-    @Override
-    public List<DeputadoDto> filtrarDeputadosPoliticaMarinha(List<DeputadoDto> deputados) {
-        return deputados.stream()
-                .filter(deputado -> possuiTermoMarinho(deputado.nome()) ||
-                        possuiTermoMarinho(deputado.siglaPartido()) ||
-                        possuiTermoMarinho(deputado.siglaUf()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProposicaoDto> filtrarProposicoesPoliticaMarinha(List<ProposicaoDto> proposicoes) {
+    public List<Proposicao> filtrarProposicoesPoliticaMarinha(List<Proposicao> proposicoes) {
         return proposicoes.stream()
                 .filter(proposicao ->
-                        possuiTermoMarinho( proposicao.ementa() )
+                        possuiTermoMarinho( proposicao.getEmenta() )
                 ).toList();
-    }
-
-    @Override
-    public List<VotacaoDto> filtrarVotacoesPoliticaMarinha(List<VotacaoDto> votacoes) {
-        return votacoes.stream()
-                .filter(votacao ->
-                                (possuiTermoMarinho(votacao.id().toString()) ||
-                                        possuiTermoMarinho(votacao.id().toString()) ||
-                                        possuiTermoMarinho(votacao.idOrgao().toString())))
-                .collect(Collectors.toList());
     }
 
     private boolean possuiTermoMarinho(String texto) {

@@ -3,6 +3,7 @@ package br.com.GS4.wetPolicies.core.controller;
 import br.com.GS4.wetPolicies.core.model.DTO.ProposicaoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.service.ProposicaoService;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,11 @@ public class ProposicaoController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProposicaoDto> getAllProposicoes() {
+    public List<Proposicao> getAllProposicoes(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @Parameter(description = "Atributo para ordenação. Opções: id, uri, siglaTipo, codTipo,numero, ano, ementa")
+            @RequestParam(required = false, defaultValue = "id") String orderBy) {
         return proposicaoService.findAll();
     }
 

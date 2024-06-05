@@ -1,31 +1,44 @@
 package br.com.GS4.wetPolicies.core.model.DTO;
 
+import br.com.GS4.wetPolicies.core.model.entity.Bancada;
+import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
-import br.com.GS4.wetPolicies.core.model.entity.Votacao;
+import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 /**
- * DTO for {@link Votacao}
+ * DTO for {@link VotacaoPorProposicao}
  */
 public record VotacaoDto(
         String id,
-        Integer idOrgao,
-        LocalDate dataInicio,
-        LocalDate dataFim,
-        LocalDateTime dataHoraRegistro,
-        Proposicao proposicao) implements Serializable {
+        Proposicao proposicao,
+        List<Bancada> bancadas,
+        List<Deputado> deputados,
+        String resumo,
+        Date data,
+        String hora,
+        String objVotacao,
+        String codSessao) implements Serializable {
 
-    public VotacaoDto(Votacao entity) {
+    public VotacaoDto(VotacaoPorProposicao entity) {
         this(
                 entity.getId(),
-                entity.getIdOrgao(),
-                entity.getDataInicio(),
-                entity.getDataFim(),
-                entity.getDataHoraRegistro(),
-                entity.getProposicao()
+                entity.getProposicao(),
+                entity.getBancadas(),
+                entity.getDeputados(),
+                entity.getResumo(),
+                entity.getData(),
+                entity.getHora(),
+                entity.getObjVotacao(),
+                entity.getCodSessao()
         );
     }
 }
