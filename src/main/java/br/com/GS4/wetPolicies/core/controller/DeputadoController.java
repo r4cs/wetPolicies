@@ -3,6 +3,7 @@ package br.com.GS4.wetPolicies.core.controller;
 import br.com.GS4.wetPolicies.core.model.DTO.DeputadoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.service.DeputadoService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,12 +44,14 @@ public class DeputadoController {
         return ResponseEntity.ok(deputado);
     }
 
+//    @Hidden
     @PostMapping
     public ResponseEntity<Deputado> saveDeputado(@RequestBody Deputado deputado) {
         Deputado savedDeputado = deputadoService.save(deputado);
         return ResponseEntity.ok(savedDeputado);
     }
 
+//    @Hidden
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDeputado(@PathVariable Integer id) {
         deputadoService.deleteById(id);
