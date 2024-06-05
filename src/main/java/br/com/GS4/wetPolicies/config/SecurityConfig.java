@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .permitAll()
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/content")
                 ).logout((logout) -> logout
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
