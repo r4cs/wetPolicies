@@ -1,13 +1,12 @@
 package br.com.GS4.wetPolicies.core.model.entity;
 
+import br.com.GS4.wetPolicies.config.CustomDateDeserializer;
 import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,17 +15,23 @@ import java.util.List;
 @Table(name = "votacao")
 public class VotacaoPorProposicao {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "id_proposicao")
     private Proposicao proposicao;
-    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bancada> bancadas;
-    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "votacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Deputado> deputados;
 
     private String resumo;
-    private Date data;
+    private String data;
     private String hora;
     private String objVotacao;
     private String codSessao;

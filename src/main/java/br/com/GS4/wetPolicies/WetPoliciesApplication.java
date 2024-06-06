@@ -14,9 +14,7 @@ public class WetPoliciesApplication {
 }
 
 
-
 /*
-
 //package br.com.GS4.wetPolicies;
 //
 //import org.springframework.boot.SpringApplication;
@@ -47,5 +45,4 @@ public class WetPoliciesApplication {
 ////		gerarWetPoliciesDb.init();
 //	}
 //}
-
  */

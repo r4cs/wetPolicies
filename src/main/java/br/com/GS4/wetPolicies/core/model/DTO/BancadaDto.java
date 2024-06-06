@@ -9,7 +9,7 @@ import java.io.Serializable;
  * DTO for {@link br.com.GS4.wetPolicies.core.model.entity.Bancada}
  */
 public record BancadaDto(
-        Long id,
+        Integer id,
         String sigla,
         String orientacao,
         VotacaoPorProposicao votacao) implements Serializable {

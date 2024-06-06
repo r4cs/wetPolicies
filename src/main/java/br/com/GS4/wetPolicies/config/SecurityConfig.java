@@ -28,7 +28,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/", "/login").permitAll()
                                 .requestMatchers(
                                         "/logout",
                                         "/api/**",
@@ -57,7 +57,8 @@ public class SecurityConfig {
                 "/css/**", "/images/**",
                 "/deputados/**",
                 "/proposicoes/**",
-                "/votacoes/**"
+                "/votacoes/**",
+                "/bancadas/**"
         );
     }
 }

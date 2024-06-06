@@ -24,6 +24,7 @@ public class Proposicao {
     @JoinColumn(name = "id_deputado")
     private Deputado idDeputadoAutor;
 
+//    @OneToMany(mappedBy = "proposicao", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "proposicao")
     private List<VotacaoPorProposicao> votacoes;
     public Proposicao() {}

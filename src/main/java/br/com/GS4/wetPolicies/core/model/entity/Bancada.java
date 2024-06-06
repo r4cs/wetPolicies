@@ -12,7 +12,8 @@ import lombok.Setter;
 public class Bancada {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String sigla;
     private String orientacao;

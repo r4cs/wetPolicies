@@ -4,6 +4,7 @@ import br.com.GS4.wetPolicies.core.model.entity.Bancada;
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.service.DeputadoService;
 import br.com.GS4.wetPolicies.core.service.ProposicaoService;
 import br.com.GS4.wetPolicies.core.service.VotacaoPorProposicaoService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,19 +22,21 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GerarVotacoesDb {
 
     private final ProposicaoService proposicaoService;
+    private final DeputadoService deputadoService;
     private final VotacaoPorProposicaoService votacaoPorProposicaoService;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public GerarVotacoesDb(ProposicaoService proposicaoService, VotacaoPorProposicaoService votacaoPorProposicaoService, RestTemplate restTemplate) {
+    public GerarVotacoesDb(ProposicaoService proposicaoService, DeputadoService deputadoService, VotacaoPorProposicaoService votacaoPorProposicaoService, RestTemplate restTemplate) {
         this.proposicaoService = proposicaoService;
+        this.deputadoService = deputadoService;
         this.votacaoPorProposicaoService = votacaoPorProposicaoService;
         this.restTemplate = restTemplate;
     }
@@ -58,27 +61,29 @@ public class GerarVotacoesDb {
                     + "&numero=" + URLEncoder.encode(numero, StandardCharsets.UTF_8)
                     + "&ano=" + URLEncoder.encode(ano, StandardCharsets.UTF_8);
 
+            System.out.println("\n\n*** Url da proposicao: " + url);
+
+
             try {
                 ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-                String responseBody = response.getBody();
+                String responseBody = convertXmlToJson(response.getBody());
 
-                System.out.println("*** Response body " + responseBody);
-
-                if (responseBody != null && responseBody.trim().startsWith("<")) {
-                    System.out.println("*** A resposta está em XML, convertendo para JSON.");
-                    responseBody = convertXmlToJson(responseBody);
-                }
-
-                // Processar a resposta e salvar na tabela votacoes
                 JsonNode root = mapper.readTree(responseBody);
                 JsonNode votacoesNode = root.path("proposicao").path("Votacoes").path("Votacao");
                 System.out.println("*** Votacoes: " + responseBody);
 
                 if (votacoesNode.isObject()) {
                     VotacaoPorProposicao votacao = new VotacaoPorProposicao();
+                    votacao.setId(proposicao.getId());
                     votacao.setProposicao(proposicao);
-                    votacao.setResumo(votacoesNode.path("Resumo").asText());
-                    votacao.setData(mapper.convertValue(votacoesNode.path("Data"), Date.class));
+
+                    String resumo = votacoesNode.path("Resumo").asText();
+                    if (resumo.length() > 8000) {
+                        resumo = resumo.substring(0, 8000);
+                    }
+                    votacao.setResumo(resumo);
+
+                    votacao.setData(votacoesNode.path("Data").asText());
                     votacao.setHora(votacoesNode.path("Hora").asText());
                     votacao.setObjVotacao(votacoesNode.path("ObjVotacao").asText());
                     votacao.setCodSessao(votacoesNode.path("codSessao").asText());
@@ -96,28 +101,38 @@ public class GerarVotacoesDb {
                     }
                     votacao.setBancadas(bancadas);
 
+//                    votacaoPorProposicaoService.save(votacao); // Persistindo a votação antes dos deputados
+
                     List<Deputado> deputados = new ArrayList<>();
                     JsonNode deputadosNode = votacoesNode.path("votos").path("Deputado");
                     if (deputadosNode.isArray()) {
                         for (JsonNode deputadoNode : deputadosNode) {
-                            Deputado deputado = new Deputado();
-                            deputado.setNome(deputadoNode.path("Nome").asText());
-                            deputado.setIdeCadastro(deputadoNode.path("ideCadastro").asText());
-                            deputado.setPartido(deputadoNode.path("Partido").asText());
-                            deputado.setUf(deputadoNode.path("UF").asText());
-                            deputado.setVoto(deputadoNode.path("Voto").asText());
-                            deputado.setVotacao(votacao);
-                            deputados.add(deputado);
+                            Optional<Deputado> deputado = deputadoService.findById(deputadoNode.path("ideCadastro").asInt());
+                            if (!deputado.isPresent()) {
+                                Deputado d = new Deputado();
+                                d.setId(deputadoNode.path("ideCadastro").asInt());
+                                d.setNome(deputadoNode.path("Nome").asText());
+                                d.setIdeCadastro(deputadoNode.path("ideCadastro").asText());
+                                d.setPartido(deputadoNode.path("Partido").asText());
+                                d.setUf(deputadoNode.path("UF").asText());
+                                d.setVoto(deputadoNode.path("Voto").asText());
+                                d.setVotacao(votacao);
+                                deputados.add(d);
+//                                deputadoService.save(d);
+                            } else {
+                                deputados.add(deputado.get());
+                            }
                         }
                     }
                     votacao.setDeputados(deputados);
 
-                    votacaoPorProposicaoService.save(votacao);
-                    Thread.sleep(1000); // Pausa para respeitar o rate limit
+                    votacaoPorProposicaoService.save(votacao); // Persistindo a votação novamente com os deputados associados
+
+                    Thread.sleep(2000); // Pausa para respeitar o rate limit
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Error fetching votacao for proposicao " + proposicao.getId() + ": " + e.getMessage());
+                System.out.println("*** Error fetching votacao for proposicao " + proposicao.getId() + ": " + e.getMessage());
             }
         }
     }

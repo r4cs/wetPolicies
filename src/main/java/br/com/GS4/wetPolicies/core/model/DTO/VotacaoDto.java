@@ -18,12 +18,12 @@ import java.util.List;
  * DTO for {@link VotacaoPorProposicao}
  */
 public record VotacaoDto(
-        String id,
+        Integer id,
         Proposicao proposicao,
         List<Bancada> bancadas,
         List<Deputado> deputados,
         String resumo,
-        Date data,
+        String data,
         String hora,
         String objVotacao,
         String codSessao) implements Serializable {
