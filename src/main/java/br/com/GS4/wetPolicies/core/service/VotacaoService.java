@@ -11,11 +11,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class VotacaoPorProposicaoService {
+public class VotacaoService {
     private final VotacaoPorProposicaoRepository votacaoRepository;
 
     @Autowired
-    public VotacaoPorProposicaoService(VotacaoPorProposicaoRepository votacaoRepository) {
+    public VotacaoService(VotacaoPorProposicaoRepository votacaoRepository) {
         this.votacaoRepository = votacaoRepository;
     }
 

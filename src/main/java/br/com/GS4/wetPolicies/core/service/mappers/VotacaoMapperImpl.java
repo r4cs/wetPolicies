@@ -1,24 +1,26 @@
 package br.com.GS4.wetPolicies.core.service.mappers;
 
 import br.com.GS4.wetPolicies.core.model.DTO.BancadaDto;
+import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Bancada;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VotacaoMapperImpl implements  BancadaMapper {
+public class VotacaoMapperImpl implements  VotacaoMapper {
     @Override
-    public BancadaDto toDto(Bancada entity) {
+    public VotacaoDto toDto(Votacao entity) {
         if (entity == null) { return null; }
-        return new BancadaDto(
+        return new VotacaoDto(
                 entity.getId(),
-                entity.getNome(),
-                entity.getOrientacoesBancadas(),
-                entity.getClassificacao()
+                entity.getProposicao(),
+                entity.getData(),
+                entity.getOrientacoesBancadas()
         );
     }
 
     @Override
-    public Bancada toEntity(BancadaDto dto) {
+    public Votacao toEntity(VotacaoDto dto) {
         return null;
     }
 }

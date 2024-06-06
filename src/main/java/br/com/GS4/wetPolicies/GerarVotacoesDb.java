@@ -6,7 +6,7 @@ import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import br.com.GS4.wetPolicies.core.service.DeputadoService;
 import br.com.GS4.wetPolicies.core.service.ProposicaoService;
-import br.com.GS4.wetPolicies.core.service.VotacaoPorProposicaoService;
+import br.com.GS4.wetPolicies.core.service.VotacaoService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpEntity;
@@ -26,14 +26,14 @@ public class GerarVotacoesDb {
 
     private final ProposicaoService proposicaoService;
     private final DeputadoService deputadoService;
-    private final VotacaoPorProposicaoService votacaoPorProposicaoService;
+    private final VotacaoService votacaoService;
     private final RestTemplate restTemplate;
 
 //    @Autowired
-    public GerarVotacoesDb(ProposicaoService proposicaoService, DeputadoService deputadoService, VotacaoPorProposicaoService votacaoPorProposicaoService, RestTemplate restTemplate) {
+    public GerarVotacoesDb(ProposicaoService proposicaoService, DeputadoService deputadoService, VotacaoService votacaoService, RestTemplate restTemplate) {
         this.proposicaoService = proposicaoService;
         this.deputadoService = deputadoService;
-        this.votacaoPorProposicaoService = votacaoPorProposicaoService;
+        this.votacaoService = votacaoService;
         this.restTemplate = restTemplate;
     }
 
@@ -122,7 +122,7 @@ public class GerarVotacoesDb {
                     }
 //                    votacao.setDeputados(deputados);
 
-                    votacaoPorProposicaoService.save(votacao); // Persistindo a votação novamente com os deputados associados
+                    votacaoService.save(votacao); // Persistindo a votação novamente com os deputados associados
 
                     Thread.sleep(2000); // Pausa para respeitar o rate limit
                 }

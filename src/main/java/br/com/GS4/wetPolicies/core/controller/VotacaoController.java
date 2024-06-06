@@ -2,7 +2,7 @@ package br.com.GS4.wetPolicies.core.controller;
 
 import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Votacao;
-import br.com.GS4.wetPolicies.core.service.VotacaoPorProposicaoService;
+import br.com.GS4.wetPolicies.core.service.VotacaoService;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.Optional;
 @RequestMapping("/votacoes")
 public class VotacaoController {
 
-    private final VotacaoPorProposicaoService votacaoPorProposicaoService;
+    private final VotacaoService votacaoService;
 
-    public VotacaoController(VotacaoPorProposicaoService votacaoPorProposicaoService) {
-        this.votacaoPorProposicaoService = votacaoPorProposicaoService;
+    public VotacaoController(VotacaoService votacaoService) {
+        this.votacaoService = votacaoService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,11 +26,11 @@ public class VotacaoController {
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @Parameter(description = "Atributo para ordenação. Opções: id, idOrgao, dataInicio, dataFim")
             @RequestParam(required = false, defaultValue = "id") String orderBy) {
-        return votacaoPorProposicaoService.findAll();
+        return votacaoService.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<Votacao> getVotacaoById(@PathVariable String id) {
-        return votacaoPorProposicaoService.findById(id);
+        return votacaoService.findById(id);
     }
 }

@@ -10,24 +10,20 @@ import java.io.Serializable;
  */
 
 public record DeputadoDto(
-        Integer id,
-        String nome,
         String ideCadastro,
+        String nome,
         String partido,
         String uf,
         String classificacao,
-        String voto,
         Votacao votacao) implements Serializable {
 
     public DeputadoDto(Deputado entity) {
         this(
-                entity.getId(),
-                entity.getNome(),
                 entity.getIdeCadastro(),
+                entity.getNome(),
                 entity.getPartido(),
                 entity.getUf(),
                 entity.getClassificacao(),
-                entity.getVoto(),
                 entity.getVotacao()
         );
     }
