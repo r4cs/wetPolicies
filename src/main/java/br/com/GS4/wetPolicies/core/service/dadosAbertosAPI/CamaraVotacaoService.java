@@ -1,8 +1,7 @@
 package br.com.GS4.wetPolicies.core.service.dadosAbertosAPI;
 
 import br.com.GS4.wetPolicies.core.controller.dadosAbertosAPI.CamaraClientApiAntiga;
-import br.com.GS4.wetPolicies.core.model.entity.Deputado;
-import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import br.com.GS4.wetPolicies.core.repository.VotacaoPorProposicaoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class CamaraVotacaoService {
     public void fetchAndSaveVotacoes(Map<String, String> params) {
         try {
             logger.info("*** *** Fetching votacoes with params: {}", params);
-            List<VotacaoPorProposicao> votacoes = camaraClient.getVotacaoPorProposicao(params);
+            List<Votacao> votacoes = camaraClient.getVotacaoPorProposicao(params);
             votacaoRepository.saveAll(votacoes);
             logger.info("*** *** Saved {} votacoes to repository", votacoes.size());
         } catch (Exception e) {
@@ -34,12 +33,12 @@ public class CamaraVotacaoService {
         }
     }
 
-    public List<VotacaoPorProposicao> fetchVotacao(Map<String, String> params) {
+    public List<Votacao> fetchVotacao(Map<String, String> params) {
         logger.info("*** *** Fetching votacoes with params: {}", params);
         return camaraClient.getVotacaoPorProposicao(params);
     }
 
-//    public VotacaoPorProposicao fetchVotacaoPorId(Integer id) {
+//    public Votacao fetchVotacaoPorId(Integer id) {
 //        logger.info("*** *** Fetching votacao by id: {}", id);
 //        return camaraClient.getVotacaoPorProposicaoById(id);
 //    }

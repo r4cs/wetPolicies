@@ -2,7 +2,7 @@ package br.com.GS4.wetPolicies.core.controller.dadosAbertosAPI;
 
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
-import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +30,9 @@ public interface CamaraClientApiNova {
     Proposicao getProposicaoById(@PathVariable("id") Long id);
 
     @GetMapping(value="/votacoes", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<VotacaoPorProposicao> getVotacoes(@RequestParam Map<String, String> params);
+    List<Votacao> getVotacoes(@RequestParam Map<String, String> params);
 
     @GetMapping(value="/votacoes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    VotacaoPorProposicao getVotacaoById(@PathVariable("id") Long id);
+    Votacao getVotacaoById(@PathVariable("id") Long id);
 
 }

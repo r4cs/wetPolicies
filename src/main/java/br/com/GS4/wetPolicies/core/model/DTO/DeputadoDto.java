@@ -1,11 +1,9 @@
 package br.com.GS4.wetPolicies.core.model.DTO;
 
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
-import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
-import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * DTO for {@link Deputado}
@@ -19,7 +17,7 @@ public record DeputadoDto(
         String uf,
         String classificacao,
         String voto,
-        VotacaoPorProposicao votacao) implements Serializable {
+        Votacao votacao) implements Serializable {
 
     public DeputadoDto(Deputado entity) {
         this(

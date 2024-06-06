@@ -1,7 +1,7 @@
 package br.com.GS4.wetPolicies.core.controller;
 
 import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
-import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import br.com.GS4.wetPolicies.core.service.VotacaoPorProposicaoService;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class VotacaoController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<VotacaoPorProposicao> getVotacaoById(@PathVariable String id) {
+    public Optional<Votacao> getVotacaoById(@PathVariable String id) {
         return votacaoPorProposicaoService.findById(id);
     }
 }

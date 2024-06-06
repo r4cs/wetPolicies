@@ -58,7 +58,9 @@ public class SecurityConfig {
                 "/deputados/**",
                 "/proposicoes/**",
                 "/votacoes/**",
-                "/bancadas/**"
+                "/bancadas/**",
+                "/static/images/**",
+                "https://dadosabertos.camara.leg.br/api/v2/**"
         );
     }
 }

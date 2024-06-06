@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -13,21 +15,21 @@ public class Bancada {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private String sigla;
-    private String orientacao;
+    private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "id_votacao")
-    private VotacaoPorProposicao votacao;
+    @OneToMany(mappedBy = "bancada", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrientacaoBancada> orientacoesBancadas;
+
+    private String classificacao;
 
     public Bancada() {}
 
     public Bancada(BancadaDto dto) {
         this.id = dto.id();
-        this.sigla = dto.sigla();
-        this.orientacao = dto.orientacao();
-        this.votacao = dto.votacao();
+        this.nome = dto.nome();
+        this.orientacoesBancadas = dto.orientacoesBancadas();
+        this.classificacao = dto.classificacao();
     }
 }
