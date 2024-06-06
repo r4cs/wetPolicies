@@ -1,7 +1,7 @@
 package br.com.GS4.wetPolicies.core.service;
 
 import br.com.GS4.wetPolicies.core.model.DTO.VotacaoDto;
-import br.com.GS4.wetPolicies.core.model.entity.VotacaoPorProposicao;
+import br.com.GS4.wetPolicies.core.model.entity.Votacao;
 import br.com.GS4.wetPolicies.core.repository.VotacaoPorProposicaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,11 @@ public class VotacaoPorProposicaoService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<VotacaoPorProposicao> findById(String id) {
+    public Optional<Votacao> findById(String id) {
         return votacaoRepository.findById(id);
     }
 
-    public void save(VotacaoPorProposicao votacao) {
+    public void save(Votacao votacao) {
         votacaoRepository.save(votacao);
     }
 

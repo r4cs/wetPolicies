@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
@@ -23,7 +21,7 @@ public class Deputado {
     private String voto;
     @ManyToOne
     @JoinColumn(name = "id_votacao")
-    private VotacaoPorProposicao votacao;
+    private Votacao votacao;
     public Deputado() {}
 
     public Deputado(DeputadoDto dto) {

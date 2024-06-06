@@ -1,7 +1,8 @@
 package br.com.GS4.wetPolicies.core.controller;
 
-import br.com.GS4.wetPolicies.core.model.entity.Deputado;
-import br.com.GS4.wetPolicies.core.service.DeputadoService;
+import br.com.GS4.wetPolicies.core.model.entity.Bancada;
+//import br.com.GS4.wetPolicies.core.model.entity.Deputado;
+import br.com.GS4.wetPolicies.core.service.BancadaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,26 +15,26 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private final DeputadoService deputadoService;
+    private final BancadaService bancadaService;
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    public MainController(DeputadoService deputadoService) {
-        this.deputadoService = deputadoService;
+    public MainController(BancadaService bancadaService) {
+        this.bancadaService = bancadaService;
     }
 
     @GetMapping("/")
     String index(Principal principal, Model model) {
-        List<Deputado> deputadosVerde = deputadoService.findByClassificacao("verde");
-        List<Deputado> deputadosAmarelo = deputadoService.findByClassificacao("amarelo");
-        List<Deputado> deputadosVermelho = deputadoService.findByClassificacao("vermelho");
+        List<Bancada> bancadasVerde = bancadaService.findByClassificacao("verde");
+        List<Bancada> bancadasAmarela = bancadaService.findByClassificacao("amarelo");
+        List<Bancada> bancadasVermelha = bancadaService.findByClassificacao("vermelho");
 
-        System.out.println("*** Deputados Verde: " + deputadosVerde);
-        System.out.println("*** Deputados Amarelo: " + deputadosAmarelo.size());
-        System.out.println("*** Deputados Vermelho: " + deputadosVermelho.stream().findFirst());
+        System.out.println("*** Bancadas Verde: " + bancadasVerde);
+        System.out.println("*** Bancadas Amarelo: " + bancadasAmarela.size());
+        System.out.println("*** Bancadas Vermelho: " + bancadasVermelha.stream().findFirst());
 
-        model.addAttribute("deputadosVerde", deputadosVerde);
-        model.addAttribute("deputadosAmarelo", deputadosAmarelo);
-        model.addAttribute("deputadosVermelho", deputadosVermelho);
+        model.addAttribute("bancadasVerde", bancadasVerde);
+        model.addAttribute("bancadasAmarela", bancadasAmarela);
+        model.addAttribute("bancadasVermelha", bancadasVermelha);
 
         logger.debug("Principal em root /: {}", principal);
         return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";

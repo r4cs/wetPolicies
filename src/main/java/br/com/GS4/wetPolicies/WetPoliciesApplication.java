@@ -15,8 +15,8 @@ public class WetPoliciesApplication {
 
 
 
-/*
 
+/*
 //package br.com.GS4.wetPolicies;
 //
 //import org.springframework.boot.SpringApplication;
@@ -29,11 +29,9 @@ public class WetPoliciesApplication {
 //public class WetPoliciesApplication {
 //
 //	private final GerarWetPoliciesDb gerarWetPoliciesDb;
-//	private final GerarVotacoesDb gerarVotacoesDb;
 //
-//	public WetPoliciesApplication(GerarWetPoliciesDb gerarWetPoliciesDb, GerarVotacoesDb gerarVotacoesDb) {
+//	public WetPoliciesApplication(GerarWetPoliciesDb gerarWetPoliciesDb) {
 //		this.gerarWetPoliciesDb = gerarWetPoliciesDb;
-//		this.gerarVotacoesDb = gerarVotacoesDb;
 //	}
 //
 //	public static void main(String[] args) {
@@ -43,9 +41,7 @@ public class WetPoliciesApplication {
 //	}
 //
 //	public void startDataGeneration() {
-//		gerarVotacoesDb.init();
-////		gerarWetPoliciesDb.init();
+//		gerarWetPoliciesDb.init();
 //	}
 //}
-
  */

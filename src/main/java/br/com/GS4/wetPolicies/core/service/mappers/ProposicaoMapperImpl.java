@@ -11,13 +11,10 @@ public class ProposicaoMapperImpl implements  ProposicaoMapper {
         if (entity == null) { return null; }
         return new ProposicaoDto(
                 entity.getId(),
-                entity.getUri(),
                 entity.getSiglaTipo(),
-                entity.getCodTipo(),
                 entity.getNumero(),
                 entity.getAno(),
                 entity.getEmenta(),
-                entity.getIdDeputadoAutor(),
                 entity.getVotacoes()
         );
     }

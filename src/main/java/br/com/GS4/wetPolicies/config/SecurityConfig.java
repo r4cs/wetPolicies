@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .permitAll()
-                                .defaultSuccessUrl("/content")
+                                .defaultSuccessUrl("/")
                 ).logout((logout) -> logout
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
@@ -58,7 +58,9 @@ public class SecurityConfig {
                 "/deputados/**",
                 "/proposicoes/**",
                 "/votacoes/**",
-                "/bancada/**"
+                "/bancadas/**",
+                "/static/images/**",
+                "https://dadosabertos.camara.leg.br/api/v2/**"
         );
     }
 }
