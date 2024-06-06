@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 public record DeputadoDto(
-        String ideCadastro,
+        Integer ideCadastro,
         String nome,
         String partido,
         String uf,

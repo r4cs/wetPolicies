@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "deputado")
 public class Deputado {
     @Id
-    private String ideCadastro;
+    private Integer ideCadastro;
     private String nome;
     private String partido;
     private String uf;

@@ -106,12 +106,10 @@ public class GerarVotacoesDb {
                             Optional<Deputado> deputado = deputadoService.findById(deputadoNode.path("ideCadastro").asInt());
                             if (!deputado.isPresent()) {
                                 Deputado d = new Deputado();
-                                d.setId(deputadoNode.path("ideCadastro").asInt());
+                                d.setIdeCadastro(deputadoNode.path("ideCadastro").asInt());
                                 d.setNome(deputadoNode.path("Nome").asText());
-                                d.setIdeCadastro(deputadoNode.path("ideCadastro").asText());
                                 d.setPartido(deputadoNode.path("Partido").asText());
                                 d.setUf(deputadoNode.path("UF").asText());
-                                d.setVoto(deputadoNode.path("Voto").asText());
                                 d.setVotacao(votacao);
                                 deputados.add(d);
 //                                deputadoService.save(d);
