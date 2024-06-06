@@ -1,5 +1,6 @@
 package br.com.GS4.wetPolicies.core.model.entity;
 
+import br.com.GS4.wetPolicies.core.model.DTO.OrientacaoBancadaDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,13 @@ public class OrientacaoBancada {
     private Bancada bancada;
 
     private String orientacao; // 'Sim', 'Não', 'Abstenção', etc.
+
+    public OrientacaoBancada() {}
+    public OrientacaoBancada(OrientacaoBancadaDto dto) {
+        this.id = dto.id();
+        this.votacao = dto.votacao();
+        this.bancada = dto.bancada();
+        this.orientacao = dto.orientacao();
+    }
 
 }
