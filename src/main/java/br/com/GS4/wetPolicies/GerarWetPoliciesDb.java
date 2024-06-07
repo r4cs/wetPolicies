@@ -14,19 +14,19 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Component
+//@Component
 public class GerarWetPoliciesDb {
 
     private final ProposicaoService proposicaoService;
     private final RestTemplate restTemplate;
 
-    @Autowired
+//    @Autowired
     public GerarWetPoliciesDb(ProposicaoService proposicaoService, RestTemplate restTemplate) {
         this.proposicaoService = proposicaoService;
         this.restTemplate = restTemplate;
     }
 
-    @EventListener(ContextRefreshedEvent.class)
+//    @EventListener(ContextRefreshedEvent.class)
     public void init() {
         String[] keywords = {
                 "poluição do oceano", "resíduos de plástico no oceano",

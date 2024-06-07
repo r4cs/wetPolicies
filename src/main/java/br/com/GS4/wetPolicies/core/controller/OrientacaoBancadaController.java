@@ -1,9 +1,7 @@
 package br.com.GS4.wetPolicies.core.controller;
 
-import br.com.GS4.wetPolicies.core.model.entity.Bancada;
 import br.com.GS4.wetPolicies.core.model.entity.OrientacaoBancada;
-import br.com.GS4.wetPolicies.core.service.BancadaService;
-import br.com.GS4.wetPolicies.core.service.strategy.OrientacaoBancadaService;
+import br.com.GS4.wetPolicies.core.service.OrientacaoBancadaService;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
