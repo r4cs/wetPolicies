@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BancadaRepository extends JpaRepository<Bancada, Integer> {
@@ -15,4 +16,6 @@ public interface BancadaRepository extends JpaRepository<Bancada, Integer> {
     Page<Bancada> findAll(Pageable pageable);
 
     List<Bancada> findByClassificacao(String classificacao);
+
+    Optional<Bancada> findByNome(String sigla);
 }

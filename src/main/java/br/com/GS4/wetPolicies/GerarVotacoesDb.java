@@ -1,23 +1,24 @@
 package br.com.GS4.wetPolicies;
 
 import br.com.GS4.wetPolicies.core.model.entity.Bancada;
-import br.com.GS4.wetPolicies.core.model.entity.Deputado;
+import br.com.GS4.wetPolicies.core.model.entity.OrientacaoBancada;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.model.entity.Votacao;
-import br.com.GS4.wetPolicies.core.service.DeputadoService;
-import br.com.GS4.wetPolicies.core.service.ProposicaoService;
-import br.com.GS4.wetPolicies.core.service.VotacaoService;
+import br.com.GS4.wetPolicies.core.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,14 +26,20 @@ import java.util.Optional;
 public class GerarVotacoesDb {
 
     private final ProposicaoService proposicaoService;
-    private final DeputadoService deputadoService;
+    private final OrientacaoBancadaService orientacaoBancadaService;
+    private final BancadaService bancadaService;
     private final VotacaoService votacaoService;
     private final RestTemplate restTemplate;
 
 //    @Autowired
-    public GerarVotacoesDb(ProposicaoService proposicaoService, DeputadoService deputadoService, VotacaoService votacaoService, RestTemplate restTemplate) {
+    public GerarVotacoesDb(ProposicaoService proposicaoService,
+                           OrientacaoBancadaService orientacaoBancadaService,
+                           BancadaService bancadaService,
+                           VotacaoService votacaoService,
+                           RestTemplate restTemplate) {
         this.proposicaoService = proposicaoService;
-        this.deputadoService = deputadoService;
+        this.orientacaoBancadaService = orientacaoBancadaService;
+        this.bancadaService = bancadaService;
         this.votacaoService = votacaoService;
         this.restTemplate = restTemplate;
     }
@@ -40,6 +47,7 @@ public class GerarVotacoesDb {
 //    @EventListener(ContextRefreshedEvent.class)
     public void init() {
         List<Proposicao> proposicoes = proposicaoService.findAll();
+        System.out.println("\n*** Proposicoes size: " + proposicoes.size());
 
         ObjectMapper mapper = new ObjectMapper();
         HttpHeaders headers = new HttpHeaders();
@@ -57,7 +65,8 @@ public class GerarVotacoesDb {
                     + "&numero=" + URLEncoder.encode(numero, StandardCharsets.UTF_8)
                     + "&ano=" + URLEncoder.encode(ano, StandardCharsets.UTF_8);
 
-            System.out.println("\n\n*** Url da proposicao: " + url);
+            System.out.println("\n*** Proposicao n: " + numero);
+            System.out.println("*** Url da proposicao: " + url);
 
 
             try {
@@ -66,66 +75,56 @@ public class GerarVotacoesDb {
 
                 JsonNode root = mapper.readTree(responseBody);
                 JsonNode votacoesNode = root.path("proposicao").path("Votacoes").path("Votacao");
-                System.out.println("*** Votacoes: " + responseBody);
 
+                // votacoesNode {hora: string, resumo: string, orientacaoBancada: { orientacao, sigla } }
                 if (votacoesNode.isObject()) {
                     Votacao votacao = new Votacao();
-//                    votacao.setId(proposicao.getId());
                     votacao.setProposicao(proposicao);
-
-                    String resumo = votacoesNode.path("Resumo").asText();
-                    if (resumo.length() > 8000) {
-                        resumo = resumo.substring(0, 8000);
-                    }
-//                    votacao.setResumo(resumo);
-
                     votacao.setData(votacoesNode.path("Data").asText());
-//                    votacao.setHora(votacoesNode.path("Hora").asText());
-//                    votacao.setObjVotacao(votacoesNode.path("ObjVotacao").asText());
-//                    votacao.setCodSessao(votacoesNode.path("codSessao").asText());
+                    votacaoService.save(votacao);
 
-                    List<Bancada> bancadas = new ArrayList<>();
+                    // bancadasNode {"bancada":[ {orientacao:string, "Sigla":"Bl UniPpFdrPsdbCid..."} ] }
                     JsonNode bancadasNode = votacoesNode.path("orientacaoBancada").path("bancada");
+                    System.out.println("\n***Bancadas: " + bancadasNode);
+
                     if (bancadasNode.isArray()) {
                         for (JsonNode bancadaNode : bancadasNode) {
-                            Bancada bancada = new Bancada();
-//                            bancada.setSigla(bancadaNode.path("Sigla").asText());
-//                            bancada.setOrientacao(bancadaNode.path("orientacao").asText());
-//                            bancada.setVotacao(votacao);
-                            bancadas.add(bancada);
-                        }
-                    }
-//                    votacao.setBancadas(bancadas);
+                            System.out.println("\n***Bancada node: " + bancadaNode);
 
-//                    votacaoPorProposicaoService.save(votacao); // Persistindo a votação antes dos deputados
+                            Optional<Bancada> optionalBancada = bancadaService.findByNome(bancadaNode.path("Sigla").asText());
+                            Bancada bancada;
+                            if ( optionalBancada.isPresent() ) {
+                                // se a bancada já existir, vamos incluir uma orientacao daquela bancada para aquela proposicao
+                                bancada = optionalBancada.get();
 
-                    List<Deputado> deputados = new ArrayList<>();
-                    JsonNode deputadosNode = votacoesNode.path("votos").path("Deputado");
-                    if (deputadosNode.isArray()) {
-                        for (JsonNode deputadoNode : deputadosNode) {
-                            Optional<Deputado> deputado = deputadoService.findById(deputadoNode.path("ideCadastro").asInt());
-                            if (!deputado.isPresent()) {
-                                Deputado d = new Deputado();
-                                d.setIdeCadastro(deputadoNode.path("ideCadastro").asInt());
-                                d.setNome(deputadoNode.path("Nome").asText());
-                                d.setPartido(deputadoNode.path("Partido").asText());
-                                d.setUf(deputadoNode.path("UF").asText());
-                                d.setVotacao(votacao);
-                                deputados.add(d);
-//                                deputadoService.save(d);
+                                OrientacaoBancada orientacaoBancada = new OrientacaoBancada();
+                                orientacaoBancada.setVotacao(votacao);
+                                orientacaoBancada.setOrientacao(bancadaNode.path("orientacao").asText());
+                                orientacaoBancadaService.save(orientacaoBancada);
+
                             } else {
-                                deputados.add(deputado.get());
+                                // se nao houver bancada, iremos cadastrar a bancada
+                                Bancada novaBancada = new Bancada();
+                                novaBancada.setNome(bancadaNode.path("Sigla").asText());
+                                bancadaService.save(novaBancada);
+
+                                // incluir a orientacao daquela bancada para aquela proposicao
+                                OrientacaoBancada orientacaoBancada = new OrientacaoBancada();
+                                orientacaoBancada.setVotacao(votacao);
+                                orientacaoBancada.setBancada(novaBancada);
+                                orientacaoBancada.setOrientacao(bancadaNode.path("orientacao").asText());
+                                orientacaoBancadaService.save(orientacaoBancada);
                             }
+
                         }
                     }
-//                    votacao.setDeputados(deputados);
 
-                    votacaoService.save(votacao); // Persistindo a votação novamente com os deputados associados
+//                    votacaoService.save(votacao); // Persistindo a votação novamente com os deputados associados
 
-                    Thread.sleep(2000); // Pausa para respeitar o rate limit
+                    Thread.sleep(1000); // Pausa para respeitar o rate limit
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 System.out.println("*** Error fetching votacao for proposicao " + proposicao.getId() + ": " + e.getMessage());
             }
         }

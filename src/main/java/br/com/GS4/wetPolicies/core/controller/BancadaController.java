@@ -19,15 +19,15 @@ import java.util.Optional;
 @RequestMapping("/api/bancada")
 public class BancadaController {
 
-    private final BancadaService bancadaService;
+    private final BancadaService service;
     private final BancadaMapperImpl mapper;
 
-    public BancadaController(BancadaService bancadaService, BancadaMapperImpl mapper) {
-        this.bancadaService = bancadaService;
+    public BancadaController(BancadaService service, BancadaMapperImpl mapper) {
+        this.service = service;
         this.mapper = mapper;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public ResponseEntity<Page<BancadaDto>> getAllBancadas(
         @RequestParam(required = false, defaultValue = "0") Integer page,
         @RequestParam(required = false, defaultValue = "10") Integer size,
@@ -35,31 +35,38 @@ public class BancadaController {
         @RequestParam(required = false, defaultValue = "id") String orderBy) {
 
             Pageable defaultPageable = PageRequest.of(page, size, Sort.by(orderBy));
-            Page<Bancada> bancada = bancadaService.findAll(defaultPageable);
+            Page<Bancada> bancada = service.findAll(defaultPageable);
             Page<BancadaDto> bancadaDTOPage = bancada.map(mapper::toDto);
             return ResponseEntity.ok(bancadaDTOPage);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<BancadaDto> getBancadaById(@PathVariable Integer id) {
-        Optional<Bancada> bancada = bancadaService.findById(id);
+        Optional<Bancada> bancada = service.findById(id);
         return bancada.map(value -> ResponseEntity.ok(mapper.toDto(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 //    @Hidden
     @PostMapping
-    public ResponseEntity<BancadaDto> saveBancada(@RequestBody BancadaDto bancadaDTO) {
-        Bancada bancada = mapper.toEntity(bancadaDTO);
-        Bancada savedBancada = bancadaService.save(bancada);
+    public ResponseEntity<BancadaDto> save(@RequestBody BancadaDto dto) {
+        Bancada bancada = mapper.toEntity(dto);
+        Bancada savedBancada = service.save(bancada);
         BancadaDto savedBancadaDto = mapper.toDto(savedBancada);
         return ResponseEntity.ok(savedBancadaDto);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<BancadaDto> update(@PathVariable Integer id, @RequestBody BancadaDto dto) {
+        Optional<Bancada> updatedBancada = service.update(id, dto);
+        return updatedBancada.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 //    @Hidden
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBancada(@PathVariable Integer id) {
-        bancadaService.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

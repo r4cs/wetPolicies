@@ -15,16 +15,14 @@ public record ProposicaoDto(
         String siglaTipo,
         Integer numero,
         Integer ano,
-        String ementa,
-        List<Votacao> votacoes) implements Serializable {
+        String ementa) implements Serializable {
     public ProposicaoDto(Proposicao entity) {
         this(
                 entity.getId(),
                 entity.getSiglaTipo(),
                 entity.getNumero(),
                 entity.getAno(),
-                entity.getEmenta(),
-                entity.getVotacoes()
+                entity.getEmenta()
         );
     }
 }

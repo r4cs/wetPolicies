@@ -21,6 +21,7 @@ public class VotacaoMapperImpl implements  VotacaoMapper {
 
     @Override
     public Votacao toEntity(VotacaoDto dto) {
-        return null;
+        if (dto == null) { return null; }
+        return new Votacao(dto);
     }
 }

@@ -19,6 +19,6 @@ public class BancadaMapperImpl implements  BancadaMapper {
 
     @Override
     public Bancada toEntity(BancadaDto dto) {
-        return null;
+        return new Bancada(dto);
     }
 }

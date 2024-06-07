@@ -29,20 +29,23 @@ public class GerarWetPoliciesDb {
 //    @EventListener(ContextRefreshedEvent.class)
     public void init() {
         String[] keywords = {
-                "poluição do oceano", "resíduos de plástico no oceano",
-                "recursos hídricos", "fiscalização de portos",
-                "fauna aquática", "resíduos na água", "resíduos no oceano",
-                "biodiversidade marinha", "ecossistema aquático", "navio-pesqueiro",
-                "fauna marinha", "flora marinha", "área marinha protegida",
-                "aquecimento global", "acidificação dos oceanos", "zona costeira",
-                "crimes ambientais", "recurso pesqueiro", "convenção sobre o direito do mar",
-                "reservas marinhas", "áreas protegidas", "unidades de conservação"
+                "hídrico", "marinho", "oceano", "rios", "ribeirinha",
+                "MarPOL", "UNCLOS", "MARPOL73/78", "ameaçadas",
+                "marítimo", "OSPAR", "Cartagena", "pesca", "ecosistema"
+//                "poluição do oceano", "resíduos de plástico no oceano",
+//                "recursos hídricos", "fiscalização de portos",
+//                "fauna aquática", "resíduos na água", "resíduos no oceano",
+//                "biodiversidade marinha", "ecossistema aquático", "navio-pesqueiro",
+//                "fauna marinha", "flora marinha", "área marinha protegida",
+//                "aquecimento global", "acidificação dos oceanos", "zona costeira",
+//                "crimes ambientais", "recurso pesqueiro", "convenção sobre o direito do mar",
+//                "reservas marinhas", "áreas protegidas", "unidades de conservação"
         };
 
         ObjectMapper mapper = new ObjectMapper();
         HttpHeaders headers = new HttpHeaders();
         headers.set("User-Agent", "Mozilla/5.0");
-        headers.set("Accept", "application/json");
+        headers.set("Accept", "application/xml");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         String baseUrl = "https://dadosabertos.camara.leg.br/api/v2/proposicoes";
@@ -54,7 +57,7 @@ public class GerarWetPoliciesDb {
         paramsBuilder.append("&dataInicio=").append(URLEncoder.encode("2014-01-01", StandardCharsets.UTF_8));
         paramsBuilder.append("&dataFim=").append(URLEncoder.encode("2024-05-31", StandardCharsets.UTF_8));
         paramsBuilder.append("&pagina=").append(URLEncoder.encode("1", StandardCharsets.UTF_8));
-        paramsBuilder.append("&itens=100");
+        paramsBuilder.append("&itens=15");
         paramsBuilder.append("&ordem=ASC");
         paramsBuilder.append("&ordenarPor=id");
 
@@ -69,34 +72,40 @@ public class GerarWetPoliciesDb {
                 ResponseEntity<String> response = restTemplate.exchange(nextPageUrl, HttpMethod.GET, entity, String.class);
                 String responseBody = convertXmlToJson(response.getBody());
 
-                // Processar a resposta e salvar na tabela proposicoes
                 JsonNode root = mapper.readTree(responseBody);
                 System.out.println("\n\n*** root: " + root);
-                JsonNode dados = root.path("dados");
-                System.out.println("\n\n*** root path: " + dados);
 
-                if (dados.isArray()) {
-                    for (JsonNode item : dados) {
-                        Proposicao proposicao = mapper.treeToValue(item, Proposicao.class);
-                        proposicaoService.save(proposicao);
-                        Thread.sleep(2000);
-                    }
+//                JsonNode dados = root.path("dados");
+//                System.out.println("\n\n*** dados path: " + dados);
+
+                JsonNode proposicoes = root.path("xml").path("dados").path("proposicao_");
+                System.out.println("\n\n*** proposicoes path: " + proposicoes);
+
+
+                if (proposicoes.isArray()) {
+                    System.out.println("\n\n*** proposicoes is array!!");
+//                    for (JsonNode item: proposicoes) {
+//                        Proposicao proposicao = mapper.treeToValue(item, Proposicao.class);
+//                        proposicaoService.save(proposicao);
+//                        Thread.sleep(1000);
+//                    }
                 }
 
                 // Verificar se há mais páginas
-                JsonNode links = root.path("links");
+                JsonNode links = root.path("xml").path("links").path("link");
+                System.out.println("\n\n*** Links path: " + links);
                 hasNextPage = false;
 
-                if (links.isArray()) {
-                    for (JsonNode link : links) {
-                        if (link.path("rel").asText().equals("next")) {
-                            nextPageUrl = link.path("href").asText();
-                            System.out.println("\n\n*** Next Page url:" + nextPageUrl);
-                            hasNextPage = true;
-                            break;
-                        }
-                    }
-                }
+//                if (links.isArray()) {
+//                    for (JsonNode link : links) {
+//                        if (link.path("rel").asText().equals("next")) {
+//                            nextPageUrl = link.path("href").asText();
+//                            System.out.println("\n\n*** Next Page url:" + nextPageUrl);
+//                            hasNextPage = true;
+//                            break;
+//                        }
+//                    }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error: " + e.getMessage());
@@ -106,9 +115,6 @@ public class GerarWetPoliciesDb {
 
     private String convertXmlToJson(String xml) {
         try {
-            // Remover caracteres inválidos
-            // xml = xml.replaceAll("[^\\x20-\\x7e]", "");
-
             org.json.JSONObject jsonObj = org.json.XML.toJSONObject(xml);
             return jsonObj.toString();
         } catch (Exception e) {

@@ -19,6 +19,6 @@ public class OrientacaoBancadaMapperImpl implements  OrientacaoBancadaMapper {
 
     @Override
     public OrientacaoBancada toEntity(OrientacaoBancadaDto dto) {
-        return null;
+        return new OrientacaoBancada(dto);
     }
 }
