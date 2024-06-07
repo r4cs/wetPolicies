@@ -4,6 +4,7 @@ import br.com.GS4.wetPolicies.core.model.DTO.DeputadoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.service.DeputadoService;
 import br.com.GS4.wetPolicies.core.service.mappers.DeputadoMapperImpl;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController
+@RestController(value="deputado")
 @RequestMapping("/api/deputados")
+@Hidden
 public class DeputadoController {
 
     private final DeputadoService service;
@@ -52,6 +54,15 @@ public class DeputadoController {
         Deputado savedDeputado = service.save(deputado);
         return ResponseEntity.ok(savedDeputado);
     }
+
+    //    @Hidden
+    @PatchMapping("/{id}")
+    public ResponseEntity<DeputadoDto> update(@PathVariable Integer id, @RequestBody DeputadoDto dto) {
+        Optional<Deputado> updatedDeputado = service.update(id, dto);
+        return updatedDeputado.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 
 //    @Hidden
     @DeleteMapping("/{id}")

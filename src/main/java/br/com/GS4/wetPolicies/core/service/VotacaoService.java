@@ -39,6 +39,21 @@ public class VotacaoService {
         return repository.save(votacao);
     }
 
+    public Optional<Votacao> update(Integer id, VotacaoDto votacaoDto) {
+        return repository.findById(id).map(existingVotacao -> {
+            if (votacaoDto.proposicao() != null) {
+                existingVotacao.setProposicao(votacaoDto.proposicao());
+            }
+            if (votacaoDto.data() != null) {
+                existingVotacao.setData(votacaoDto.data());
+            }
+            if (votacaoDto.orientacoesBancadas() != null) {
+                existingVotacao.setOrientacoesBancadas(votacaoDto.orientacoesBancadas());
+            }
+            return repository.save(existingVotacao);
+        });
+    }
+
     public void deleteById(Integer id) {
         repository.deleteById(id);
     }

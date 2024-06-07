@@ -1,5 +1,6 @@
 package br.com.GS4.wetPolicies.core.service;
 
+import br.com.GS4.wetPolicies.core.model.DTO.BancadaDto;
 import br.com.GS4.wetPolicies.core.model.entity.Bancada;
 import br.com.GS4.wetPolicies.core.model.entity.Deputado;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
@@ -50,6 +51,19 @@ public class BancadaService {
         return repository.findByNome(sigla);
     }
 
-
+    public Optional<Bancada> update(Integer id, BancadaDto bancadaDto) {
+        return repository.findById(id).map(existingBancada -> {
+            if (bancadaDto.nome() != null) {
+                existingBancada.setNome(bancadaDto.nome());
+            }
+            if (bancadaDto.orientacoesBancadas() != null) {
+                existingBancada.setOrientacoesBancadas(bancadaDto.orientacoesBancadas());
+            }
+            if (bancadaDto.classificacao() != null) {
+                existingBancada.setClassificacao(bancadaDto.classificacao());
+            }
+            return repository.save(existingBancada);
+        });
+    }
 
 }

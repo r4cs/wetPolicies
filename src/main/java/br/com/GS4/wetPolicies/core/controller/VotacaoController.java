@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/api/votacoes")
 public class VotacaoController {
@@ -57,6 +58,14 @@ public class VotacaoController {
         Votacao savedVotacao = service.save(votacao);
         VotacaoDto savedVotacaoDto = mapper.toDto(savedVotacao);
         return ResponseEntity.ok(savedVotacaoDto);
+    }
+
+    //    @Hidden
+    @PatchMapping("/{id}")
+    public ResponseEntity<VotacaoDto> update(@PathVariable Integer id, @RequestBody VotacaoDto dto) {
+        Optional<Votacao> updatedVotacao = service.update(id, dto);
+        return updatedVotacao.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     //    @Hidden

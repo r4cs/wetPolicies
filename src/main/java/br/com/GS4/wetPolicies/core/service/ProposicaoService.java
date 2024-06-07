@@ -1,6 +1,7 @@
 package br.com.GS4.wetPolicies.core.service;
 
 import br.com.GS4.wetPolicies.core.controller.dadosAbertosAPI.CamaraClientApiNova;
+import br.com.GS4.wetPolicies.core.model.DTO.ProposicaoDto;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.repository.ProposicaoRepository;
 import br.com.GS4.wetPolicies.core.service.strategy.PoliticaMarinhaStrategy;
@@ -40,6 +41,24 @@ public class ProposicaoService {
 
     public Proposicao save(Proposicao proposicao) {
         return repository.save(proposicao);
+    }
+
+    public Optional<Proposicao> update(Integer id, ProposicaoDto proposicaoDto) {
+        return repository.findById(id).map(existingProposicao -> {
+            if (proposicaoDto.siglaTipo() != null) {
+                existingProposicao.setSiglaTipo(proposicaoDto.siglaTipo());
+            }
+            if (proposicaoDto.numero() != null) {
+                existingProposicao.setNumero(proposicaoDto.numero());
+            }
+            if (proposicaoDto.ano() != null) {
+                existingProposicao.setAno(proposicaoDto.ano());
+            }
+            if (proposicaoDto.ementa() != null) {
+                existingProposicao.setEmenta(proposicaoDto.ementa());
+            }
+            return repository.save(existingProposicao);
+        });
     }
 
     public void deleteById(Integer id) {

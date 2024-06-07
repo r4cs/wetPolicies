@@ -1,5 +1,6 @@
 package br.com.GS4.wetPolicies.core.service;
 
+import br.com.GS4.wetPolicies.core.model.DTO.OrientacaoBancadaDto;
 import br.com.GS4.wetPolicies.core.model.entity.OrientacaoBancada;
 import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.repository.OrientacaoBancadaRepository;
@@ -36,6 +37,21 @@ public class OrientacaoBancadaService {
 
     public OrientacaoBancada save(OrientacaoBancada bancada) {
         return repository.save(bancada);
+    }
+
+    public Optional<OrientacaoBancada> update(Integer id, OrientacaoBancadaDto orientacaoBancadaDto) {
+        return repository.findById(id).map(existingOrientacao -> {
+            if (orientacaoBancadaDto.votacao() != null) {
+                existingOrientacao.setVotacao(orientacaoBancadaDto.votacao());
+            }
+            if (orientacaoBancadaDto.bancada() != null) {
+                existingOrientacao.setBancada(orientacaoBancadaDto.bancada());
+            }
+            if (orientacaoBancadaDto.orientacao() != null) {
+                existingOrientacao.setOrientacao(orientacaoBancadaDto.orientacao());
+            }
+            return repository.save(existingOrientacao);
+        });
     }
 
     public void deleteById(Integer id) {

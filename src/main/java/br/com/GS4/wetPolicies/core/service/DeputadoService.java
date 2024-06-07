@@ -42,6 +42,27 @@ public class DeputadoService {
         return repository.save(deputado);
     }
 
+    public Optional<Deputado> update(Integer id, DeputadoDto deputadoDto) {
+        return repository.findById(id).map(existingDeputado -> {
+            if (deputadoDto.nome() != null) {
+                existingDeputado.setNome(deputadoDto.nome());
+            }
+            if (deputadoDto.uf() != null) {
+                existingDeputado.setUf(deputadoDto.uf());
+            }
+            if (deputadoDto.classificacao() != null) {
+                existingDeputado.setClassificacao(deputadoDto.classificacao());
+            }
+            if (deputadoDto.partido() != null) {
+                existingDeputado.setPartido(deputadoDto.partido());
+            }
+            if (deputadoDto.votacao() != null) {
+                existingDeputado.setVotacao(deputadoDto.votacao());
+            }
+            return repository.save(existingDeputado);
+        });
+    }
+
     public void deleteById(Integer id) {
         repository.deleteById(id);
     }

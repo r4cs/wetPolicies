@@ -20,7 +20,7 @@ public class Bancada {
     private String nome;
 
     @OneToMany(mappedBy = "bancada", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrientacaoBancada> orientacoesBancadas;
+        private List<OrientacaoBancada> orientacoesBancadas;
 
     private String classificacao;
 

@@ -59,6 +59,14 @@ public class OrientacaoBancadaController {
         return ResponseEntity.ok(savedDto);
     }
 
+    //    @Hidden
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrientacaoBancadaDto> update(@PathVariable Integer id, @RequestBody OrientacaoBancadaDto dto) {
+        Optional<OrientacaoBancada> updatedOrientacaoBancada = service.update(id, dto);
+        return updatedOrientacaoBancada.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 //    @Hidden
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBancada(@PathVariable Integer id) {

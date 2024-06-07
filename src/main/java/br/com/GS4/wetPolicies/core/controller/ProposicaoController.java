@@ -57,6 +57,13 @@ public class ProposicaoController {
         return ResponseEntity.ok(savedDto);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProposicaoDto> update(@PathVariable Integer id, @RequestBody ProposicaoDto dto) {
+        Optional<Proposicao> updatedProposicao = service.update(id, dto);
+        return updatedProposicao.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.deleteById(id);

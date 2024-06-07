@@ -56,6 +56,13 @@ public class BancadaController {
         return ResponseEntity.ok(savedBancadaDto);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<BancadaDto> update(@PathVariable Integer id, @RequestBody BancadaDto dto) {
+        Optional<Bancada> updatedBancada = service.update(id, dto);
+        return updatedBancada.map(value -> ResponseEntity.ok(mapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 //    @Hidden
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
