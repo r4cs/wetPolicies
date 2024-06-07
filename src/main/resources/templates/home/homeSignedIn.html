@@ -27,36 +27,12 @@
                 <ul class="nav flex-column">
 
                     <li class="nav-item">
-                        <a id="user-swagger" class="nav-link active" aria-current="page" href="http://localhost:8080/swagger-ui/index.html">
-<!--                        <a id="user-swagger" class="nav-link active" aria-current="page" href="https://wet-policies.azurewebsites.net/swagger-ui/index.html">-->
+                        <a id="user-swagger" class="nav-link active" aria-current="page" href="https://wet-policies.azurewebsites.net/swagger-ui/index.html">
                             <span data-feather="users"></span>
                             <span>Swagger</span>
                         </a>
                     </li>
 
-<!--                    <li class="nav-item" th:each="endpoint : ${endpoints}">-->
-<!--                        <a id="menu-[[${endpoint}]]" class="nav-link active" aria-current="page" th:data-endpoint="${endpoint}">-->
-<!--                            <span data-feather="users"></span>-->
-<!--                            <span th:text="${endpoint}"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link active" aria-current="page" href="https://lookerstudio.google.com/reporting/abdc7e67-a48e-4e38-a016-c6b7122bad46">-->
-<!--                            &lt;!&ndash;                                <a class="nav-link active" aria-current="page" onclick="toggleVisibilityProcurement()">&ndash;&gt;-->
-<!--                            <span data-feather="users"></span>-->
-<!--                            <span> Procurement Dashboard</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link active" aria-current="page" href="https://lookerstudio.google.com/reporting/1037c449-d1e7-40c9-a936-05c42ecd345a">-->
-
-<!--                            &lt;!&ndash;                                    <a class="nav-link active dashboard-link" aria-current="page" onclick="toggleVisibility('audit-log-dashboard')">&ndash;&gt;-->
-<!--                            <span data-feather="users"></span>-->
-<!--                            <span> Audit Log Dashboard</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
 
                 </ul>
             </div>
@@ -102,14 +78,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // const menuItems = document.querySelectorAll('[id^="menu-"]');
-        // menuItems.forEach(function(item) {
-        //     item.addEventListener('click', function() {
-        //         const entityName = item.getAttribute('data-endpoint');
-        //         // handleEntityClick(entityName.toLowerCase());
-        //     });
-        // });
-
 
         // Fechar o alerta automaticamente após 5 segundos
         const loginAlert = document.getElementById('login-alert');
