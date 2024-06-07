@@ -5,6 +5,8 @@ import br.com.GS4.wetPolicies.core.model.entity.Proposicao;
 import br.com.GS4.wetPolicies.core.repository.ProposicaoRepository;
 import br.com.GS4.wetPolicies.core.service.strategy.PoliticaMarinhaStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,49 +15,35 @@ import java.util.Optional;
 
 @Service
 public class ProposicaoService {
-    private final CamaraClientApiNova camaraClient;
-    private final ProposicaoRepository proposicaoRepository;
+    private final ProposicaoRepository repository;
     private final PoliticaMarinhaStrategy politicaMarinhaStrategy;
 
     @Autowired
-    public ProposicaoService(ProposicaoRepository proposicaoRepository, PoliticaMarinhaStrategy politicaMarinhaStrategy, CamaraClientApiNova camaraClient) {
-        this.proposicaoRepository = proposicaoRepository;
+    public ProposicaoService(ProposicaoRepository repository, PoliticaMarinhaStrategy politicaMarinhaStrategy) {
+        this.repository = repository;
         this.politicaMarinhaStrategy = politicaMarinhaStrategy;
-        this.camaraClient = camaraClient;
     }
 
-    public List<Proposicao> fetchAndSaveProposicoes(Map<String, String> params) {
-        List<Proposicao> proposicoes = camaraClient.getProposicoes(params);
-        proposicaoRepository.saveAll(proposicoes);
-        return proposicoes;
-    }
 
-    public List<Proposicao> fetchProposicoes(Map<String, String> params) {
-        System.out.println("\n\n*** Params em fetchProposicoes: " + params);
-        System.out.println("\n\ncamaraClient.getProposicoes(params): " + camaraClient.getProposicoes(params));
-        System.out.println("\n\n");
-        return camaraClient.getProposicoes(params);
+    public Page<Proposicao> findAll(Pageable page) {
+        return repository.findAll(page);
     }
-
 
     public List<Proposicao> findAll() {
-        List<Proposicao> proposicoes = proposicaoRepository.findAll();
-        return politicaMarinhaStrategy.filtrarProposicoesPoliticaMarinha(proposicoes);
+        return repository.findAll();
     }
+
 
     public Optional<Proposicao> findById(Integer id) {
-        return proposicaoRepository.findById(id);
+        return repository.findById(id);
     }
 
-    public void save(Proposicao proposicao) {
-        proposicaoRepository.save(proposicao);
+    public Proposicao save(Proposicao proposicao) {
+        return repository.save(proposicao);
     }
-
-//    public Proposicao save(Proposicao proposicao) {
-//        return proposicaoRepository.save(proposicao);
-//    }
 
     public void deleteById(Integer id) {
-        proposicaoRepository.deleteById(id);
+        repository.deleteById(id);
     }
+
 }

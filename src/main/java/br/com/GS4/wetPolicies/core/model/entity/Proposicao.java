@@ -14,13 +14,11 @@ import java.util.List;
 public class Proposicao {
     @Id
     private Integer id;
+    @Column(name = "sigla_tipo")
     private String siglaTipo;
     private Integer numero;
     private Integer ano;
     private String ementa;
-
-    @OneToMany(mappedBy = "proposicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Votacao> votacoes;
 
     public Proposicao() {}
 
@@ -30,6 +28,5 @@ public class Proposicao {
         this.numero = dto.numero();
         this.ano = dto.ano();
         this.ementa = dto.ementa();
-        this.votacoes = dto.votacoes();
     }
 }

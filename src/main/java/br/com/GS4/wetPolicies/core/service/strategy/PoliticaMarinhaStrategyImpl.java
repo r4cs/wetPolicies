@@ -10,11 +10,14 @@ import java.util.List;
 public class PoliticaMarinhaStrategyImpl implements PoliticaMarinhaStrategy {
 
     private static final List<String> MARINHA_KEYWORDS = Arrays.asList(
-            "oceano", "mar", "rio", "lago", "água", "peixe", "tubarão", "baleia", "golfinho", "tartaruga",
-            "coral", "recife", "poluição", "plástico", "microplástico", "pesca", "aquicultura", "navio",
-            "navegação", "porto", "costa", "maré", "corrente", "onda", "resíduo", "água doce", "água salgada",
-            "zona costeira", "biodiversidade marinha", "ecossistema aquático", "pescador", "fauna marinha",
-            "flora marinha", "manguezal", "área marinha protegida", "aquecimento global", "acidificação dos oceanos"
+            "poluição do oceano", "resíduos de plástico no oceano",
+            "recursos hídricos", "fiscalização de portos",
+            "fauna aquática", "resíduos na água", "resíduos no oceano",
+            "biodiversidade marinha", "ecossistema aquático", "navio-pesqueiro",
+            "fauna marinha", "flora marinha", "área marinha protegida",
+            "aquecimento global", "acidificação dos oceanos", "zona costeira",
+            "crimes ambientais", "recurso pesqueiro", "convenção sobre o direito do mar",
+            "reservas marinhas", "áreas protegidas", "unidades de conservação"
     );
 
 

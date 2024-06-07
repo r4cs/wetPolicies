@@ -14,13 +14,12 @@ public class ProposicaoMapperImpl implements  ProposicaoMapper {
                 entity.getSiglaTipo(),
                 entity.getNumero(),
                 entity.getAno(),
-                entity.getEmenta(),
-                entity.getVotacoes()
+                entity.getEmenta()
         );
     }
-
     @Override
     public Proposicao toEntity(ProposicaoDto dto) {
-        return null;
+        if (dto == null) { return null; }
+        return new Proposicao(dto);
     }
 }

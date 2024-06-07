@@ -23,6 +23,6 @@ public class DeputadoMapperImpl implements  DeputadoMapper {
 
     @Override
     public Deputado toEntity(DeputadoDto dto) {
-        return null;
+        return new Deputado(dto);
     }
 }
