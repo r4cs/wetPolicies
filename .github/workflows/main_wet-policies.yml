@@ -45,7 +45,14 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
 
+
     steps:
+      - name: Print secrets for debugging (Remove this step after debugging)
+        run: |
+          echo "DB_URL: ${{ secrets.DB_URL }}"
+          echo "DB_USERNAME: ${{ secrets.DB_USERNAME }}"
+          echo "DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
