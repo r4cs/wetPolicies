@@ -35,7 +35,6 @@ jobs:
         with:
           name: java-app
           path: 'build/libs/wetPolicies-0.0.1-SNAPSHOT.jar'
-#          path: '${{ github.workspace }}/build/libs/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,6 +57,14 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A516F13446074FDD98FE7FAA94CD0753 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1FDC2D76B9E040A087A4F7DF8BC13094 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B25698A1290841CE82D682FC8B5AE69E }}
+
+      - name: Set environment variables
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "OAUTH_GITHUB_CLIENT_ID=${{ secrets.OAUTH_GITHUB_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "OAUTH_GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "OAUTH_GOOGLE_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "OAUTH_GOOGLE_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
