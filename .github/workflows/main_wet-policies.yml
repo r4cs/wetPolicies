@@ -47,10 +47,10 @@ jobs:
 
 
     steps:
-      - name: Print secrets for debugging (Remove this step after debugging)
+      - name: Print environment variables for debugging (Remove this step after debugging)
         run: |
           echo "DB_URL: ${{ secrets.DB_URL }}"
-
+          env
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
