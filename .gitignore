@@ -1,5 +1,7 @@
 HELP.md
 .gradle
+src/main/resources/application.properties
+.todo.txt
 # Ignore the entire build directory except the build/libs subdirectory
 build/
 !build/libs/

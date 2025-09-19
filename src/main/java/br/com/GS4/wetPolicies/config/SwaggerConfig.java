@@ -13,7 +13,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI geraDocumentacao() {
         Server devServer = new Server();
-        devServer.setUrl("https://wet-policies.azurewebsites.net/");
+        devServer.setUrl("http://localhost:8080/");
         devServer.description("WetPolicies Api");
 
         Contact contact = getContact();
