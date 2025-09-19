@@ -24,6 +24,7 @@ public class MainController {
 
     @GetMapping("/")
     String index(Principal principal, Model model) {
+        System.out.println("*** Principal: " + principal);
         List<Bancada> bancadasVerde = bancadaService.findByClassificacao("verde");
         List<Bancada> bancadasAmarela = bancadaService.findByClassificacao("amarelo");
         List<Bancada> bancadasVermelha = bancadaService.findByClassificacao("vermelho");
@@ -37,7 +38,7 @@ public class MainController {
         model.addAttribute("bancadasVermelha", bancadasVermelha);
 
         logger.debug("Principal em root /: {}", principal);
-        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
+        return principal != null ? "/home/homeSignedIn" : "/home/homeNotSignedIn";
     }
 //    String index(Model model) {
 ////    String index(Principal principal, Model model) {

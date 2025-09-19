@@ -34,13 +34,13 @@ public class SecurityConfig {
                                         "/api/**",
                                         "/swagger-ui/**",
                                         "/js/**",
-                                        "/static/js/**",
-                                        "/content").authenticated()
+                                        "/static/js/**"
+                                        ).authenticated()
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .permitAll()
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/", true)
                 ).logout((logout) -> logout
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
